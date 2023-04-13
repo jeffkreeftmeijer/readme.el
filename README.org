@@ -1,0 +1,5 @@
+#+title: readme.el
+
+#+begin_src shell
+  emacs --batch README.org --load ox-md --funcall org-md-export-as-markdown --eval "(princ (buffer-string))" > README.md
+#+end_src
