@@ -1,12 +1,11 @@
+```emacs-lisp
+(defun readme/as-markdown ()
+  (use-package ox-gfm)
 
-# Table of Contents
+  (org-gfm-export-as-markdown)
+  (princ (buffer-string)))
+```
 
-
-
-    (defun readme/as-markdown ()
-      (require 'ox-md)
-      (org-md-export-as-markdown)
-      (princ (buffer-string)))
-
-    emacs --batch README.org --load readme.el --funcall readme/as-markdown > README.md
-
+```shell
+emacs --batch README.org --load readme.el --funcall readme/as-markdown > README.md
+```

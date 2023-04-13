@@ -1,4 +1,5 @@
 (defun readme/as-markdown ()
-  (require 'ox-md)
-  (org-md-export-as-markdown)
+  (use-package ox-gfm)
+
+  (org-gfm-export-as-markdown)
   (princ (buffer-string)))

@@ -3,8 +3,9 @@
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
   (defun readme/as-markdown ()
-    (require 'ox-md)
-    (org-md-export-as-markdown)
+    (use-package ox-gfm)
+
+    (org-gfm-export-as-markdown)
     (princ (buffer-string)))
 #+end_src
 
