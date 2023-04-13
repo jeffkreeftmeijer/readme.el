@@ -1,5 +1,13 @@
 #+title: readme.el
 
+#+headers: :tangle readme.el
+#+begin_src emacs-lisp
+  (defun readme/as-markdown ()
+    (require 'ox-md)
+    (org-md-export-as-markdown)
+    (princ (buffer-string)))
+#+end_src
+
 #+begin_src shell
-  emacs --batch README.org --load ox-md --funcall org-md-export-as-markdown --eval "(princ (buffer-string))" > README.md
+  emacs --batch README.org --load readme.el --funcall readme/as-markdown > README.md
 #+end_src
