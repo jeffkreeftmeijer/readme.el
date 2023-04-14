@@ -2,7 +2,7 @@
 
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
-  (defun readme/as-markdown ()
+  (defun readme/to-markdown ()
     (defvar bootstrap-version)
     (let ((bootstrap-file
 	   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -26,11 +26,9 @@
     (org-gfm-export-as-markdown)
     (org-md-title-remove)
 
-    (princ (buffer-string)))
+      (write-file "README.md"))
 #+end_src
 
 #+begin_src shell
-  emacs --batch README.org --load readme.el --funcall readme/as-markdown > README.md
+  emacs --batch README.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
 #+end_src
-
-#+RESULTS:

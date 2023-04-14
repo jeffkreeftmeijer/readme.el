@@ -1,4 +1,4 @@
-(defun readme/as-markdown ()
+(defun readme/to-markdown ()
   (defvar bootstrap-version)
   (let ((bootstrap-file
 	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -22,4 +22,4 @@
   (org-gfm-export-as-markdown)
   (org-md-title-remove)
 
-  (princ (buffer-string)))
+  (write-file "README.md"))
