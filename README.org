@@ -1,6 +1,12 @@
 #+title: readme.el
 
 A script to generate GitHub-Flavored Markdown files from Org documents, aimed at producing repository README files.
+It uses [[https://github.com/larstvei/ox-gfm][ox-gfm]] and [[https://github.com/jeffkreeftmeijer/ox-md-title.el][ox-md-title.el]] to produce GFM files with titles.
+
+The script starts by bootstrapping [[https://github.com/radian-software/straight.el][straight.el]] to allow installing packages from git repositories:[fn:straight]
+
+[fn:straight] Straight.el is used because it's a simple way to install packages without them having to be available on a package archive, without depending on =use-package= or =package-vc-install= (both of which are only available on pre-release versions of Emacs).
+
 
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
@@ -16,7 +22,13 @@ A script to generate GitHub-Flavored Markdown files from Org documents, aimed at
         (goto-char (point-max))
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
+#+end_src
 
+Ox-gfm is [[https://melpa.org/#/ox-gfm][available on Melpa]], while ox-md-title is installed from its [[https://github.com/jeffkreeftmeijer/ox-md-title.el][git repository]].
+Both are installed with straight.el and initialized:
+
+#+headers: :tangle readme.el
+#+begin_src emacs-lisp
   (straight-use-package 'ox-gfm)
 
   (straight-use-package
@@ -24,11 +36,18 @@ A script to generate GitHub-Flavored Markdown files from Org documents, aimed at
 
   (require 'ox-md-title)
   (org-md-title-add)
+#+end_src
 
+Finally, a function named =readme/to-markdown= is exposed:
+
+#+headers: :tangle readme.el
+#+begin_src emacs-lisp
   (defun readme/to-markdown (filename)
     (org-gfm-export-as-markdown)
     (write-file filename))
 #+end_src
+
+To run the script, run Emacs in =--batch= mode, open =README.org=, load =readme.el= and call the function with the desired output filename:
 
 #+begin_src shell
   emacs --batch README.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
