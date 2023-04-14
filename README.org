@@ -43,7 +43,8 @@ Finally, a function named =readme/to-markdown= is exposed:
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
   (defun readme/to-markdown (filename)
-    (org-gfm-export-as-markdown)
+    (let ((org-md-title t))
+      (org-gfm-export-as-markdown))
     (write-file filename))
 #+end_src
 

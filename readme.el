@@ -20,5 +20,6 @@
 (org-md-title-add)
 
 (defun readme/to-markdown (filename)
-  (org-gfm-export-as-markdown)
+  (let ((org-md-title t))
+    (org-gfm-export-as-markdown))
   (write-file filename))
