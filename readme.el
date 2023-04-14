@@ -19,6 +19,6 @@
 (require 'ox-md-title)
 (org-md-title-add)
 
-(defun readme/to-markdown ()
+(defun readme/to-markdown (filename)
   (org-gfm-export-as-markdown)
-  (write-file "README.md"))
+  (write-file filename))
