@@ -20,6 +20,7 @@
 (org-md-title-add)
 
 (defun readme/to-markdown (filename)
-  (let ((org-md-title t))
-    (org-gfm-export-as-markdown))
-  (write-file filename))
+  (let ((org-md-title t)
+	(make-backup-files nil))
+    (org-gfm-export-as-markdown)
+    (write-file filename)))

@@ -43,9 +43,10 @@ Finally, a function named =readme/to-markdown= is exposed:
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
   (defun readme/to-markdown (filename)
-    (let ((org-md-title t))
-      (org-gfm-export-as-markdown))
-    (write-file filename))
+    (let ((org-md-title t)
+	  (make-backup-files nil))
+      (org-gfm-export-as-markdown)
+      (write-file filename)))
 #+end_src
 
 To run the script, run Emacs in =--batch= mode, open =README.org=, load =readme.el= and call the function with the desired output filename:
