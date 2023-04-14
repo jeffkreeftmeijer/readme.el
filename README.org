@@ -1,5 +1,7 @@
 #+title: readme.el
 
+A script to generate GitHub-Flavored Markdown files from Org documents, aimed at producing repository README files.
+
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
   (defun readme/to-markdown ()
