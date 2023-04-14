@@ -11,10 +11,11 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(straight-use-package 'ox-gfm)
+
 (straight-use-package
  '(ox-md-title :type git :host github :repo "jeffkreeftmeijer/ox-md-title.el"))
 
-(use-package ox-gfm)
 (require 'ox-md-title)
 (org-md-title-add)
 
