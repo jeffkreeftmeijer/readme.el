@@ -1,0 +1,22 @@
+name: README.md
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: purcell/setup-emacs@master
+        with:
+          version: 28.2
+      - run: emacs --batch README.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Regenerate README.md
