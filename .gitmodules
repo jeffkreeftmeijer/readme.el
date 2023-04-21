@@ -1,0 +1,6 @@
+[submodule "ox-gfm"]
+	path = ox-gfm
+	url = https://github.com/larstvei/ox-gfm.git
+[submodule "ox-md-title"]
+	path = ox-md-title
+	url = https://github.com/jeffkreeftmeijer/ox-md-title.el.git
