@@ -42,7 +42,7 @@ Finally, a function named `readme/to-markdown` is exposed:
     (write-file filename)))
 ```
 
-To run the script, run Emacs in `--batch` mode, open `README.org`, load `readme.el` and call the function with the desired output filename:
+To run the script, run Emacs in `--batch` mode, open the file to be converted to Markdown (`README.org`, in this case), load `readme.el` and call the function with the desired output filename (`README.md`):
 
 ```shell
 emacs --batch README.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
