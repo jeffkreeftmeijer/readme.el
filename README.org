@@ -1,44 +1,22 @@
 #+title: readme.el
 
 A script to generate GitHub-Flavored Markdown files from Org documents, aimed at producing repository README files.
-It uses [[https://github.com/larstvei/ox-gfm][ox-gfm]] and [[https://github.com/jeffkreeftmeijer/ox-md-title.el][ox-md-title.el]] to produce GFM files with titles.
 
-The script starts by bootstrapping [[https://github.com/radian-software/straight.el][straight.el]] to allow installing packages from git repositories:[fn:straight]
-
-[fn:straight] Straight.el is used because it's a simple way to install packages without them having to be available on a package archive, without depending on =use-package= or =package-vc-install= (both of which are only available on pre-release versions of Emacs).
-
+It uses [[https://github.com/larstvei/ox-gfm][ox-gfm]] and [[https://github.com/jeffkreeftmeijer/ox-md-title.el][ox-md-title.el]] to produce GFM files with document titles.
+Instead of installing them through a package manager, both packages are vendored in and loaded directly:
 
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 6))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+(let ((directory (file-name-directory load-file-name)))
+  (load (concat directory "ox-gfm/ox-gfm"))
+  (load (concat directory "ox-md-title/ox-md-title")))
+
+(require 'ox-gfm)
+(require 'ox-md-title)
+(org-md-title-add)
 #+end_src
 
-Ox-gfm is [[https://melpa.org/#/ox-gfm][available on Melpa]], while ox-md-title is installed from its [[https://github.com/jeffkreeftmeijer/ox-md-title.el][git repository]].
-Both are installed with straight.el and initialized:
-
-#+headers: :tangle readme.el
-#+begin_src emacs-lisp
-  (straight-use-package 'ox-gfm)
-
-  (straight-use-package
-   '(ox-md-title :type git :host github :repo "jeffkreeftmeijer/ox-md-title.el"))
-
-  (require 'ox-md-title)
-  (org-md-title-add)
-#+end_src
-
-Finally, a function named =readme/to-markdown= is exposed:
+To generate the README, a function named =readme/to-markdown= is exposed:
 
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
@@ -74,6 +52,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
       - uses: purcell/setup-emacs@master
         with:
           version: 28.2
