@@ -1,8 +1,6 @@
 
 # Generate repository README files from Org documents
 
-- [`readme.el`](#org7a43cf6)
-
 A widespread standard amongst code hosting platforms is for repositories to have a file named `README.md`, which is then used as the description on the repository page. Generally, this file is written in Markdown, but other formats work too.
 
 Aside from Markdown, GitHub support Org files too. However, the support for Org lacks most advanced features, producing HTML representations which include remnants of the Org files they're generated from.<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> Using a Markdown-based README still produces the most reliable results.
@@ -17,8 +15,6 @@ emacs --batch ox-html-title.org --funcall org-md-export-to-markdown
 
 This produces a Markdown representation of `ox-html-title.org` in `ox-html-title.md`.
 
-
-<a id="org7a43cf6"></a>
 
 ## `readme.el`
 
