@@ -60,10 +60,10 @@ Then it generates the Markdown file and stores it in the location passed via the
       (write-file filename)))
 #+end_src
 
-To run the script, run Emacs in =--batch= mode, open the file to be converted to Markdown (=readme.el.org=, for example), load =readme.el= and call the function with the desired output filename (=README.md=):
+To run the script, run Emacs in =--batch= mode, open the file to be converted to Markdown (=org-readme.org=, for example), load =readme.el= and call the function with the desired output filename (=README.md=):
 
 #+begin_src shell
-  emacs --batch readme.el.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
+  emacs --batch org-readme.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
 #+end_src
 
 To automatically generate README files on GitHub, add =readme.el= to your repository as a submodule and add a workflow that calls it.
@@ -91,7 +91,7 @@ jobs:
       - uses: purcell/setup-emacs@master
         with:
           version: 28.2
-      - run: emacs --batch readme.el.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
+      - run: emacs --batch org-readme.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Regenerate README.md
