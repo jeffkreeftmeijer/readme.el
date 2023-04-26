@@ -26,7 +26,7 @@ This produces a Markdown representation of =ox-html-title.org= in =ox-html-title
 
 * =readme.el=
 
-=readme.el= is a script to generate Markdown files from Org documents, aimed at producing repository README files to be used on GitHub.
+[[https://github.com/jeffkreeftmeijer/readme.el][=readme.el=]] is a script to generate Markdown files from Org documents, aimed at producing repository README files to be used on GitHub.
 It has some advantages over running ~org-md-export-to-markdown~:
 
 1. It uses [[https://github.com/larstvei/ox-gfm][ox-gfm]] to produce /GitHub-flavored Markdown/, a dialect of Markdown which adds some features, like [[https://github.github.com/gfm/#fenced-code-blocks][fenced code blocks]], which add syntax highlighting capabilities.
