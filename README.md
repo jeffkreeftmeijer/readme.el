@@ -1,7 +1,7 @@
 
 # Generate repository README files from Org documents
 
-- [`readme.el`](#orga9d827d)
+- [`readme.el`](#org7a43cf6)
 
 A widespread standard amongst code hosting platforms is for repositories to have a file named `README.md`, which is then used as the description on the repository page. Generally, this file is written in Markdown, but other formats work too.
 
@@ -18,11 +18,11 @@ emacs --batch ox-html-title.org --funcall org-md-export-to-markdown
 This produces a Markdown representation of `ox-html-title.org` in `ox-html-title.md`.
 
 
-<a id="orga9d827d"></a>
+<a id="org7a43cf6"></a>
 
 ## `readme.el`
 
-`readme.el` is a script to generate Markdown files from Org documents, aimed at producing repository README files to be used on GitHub. It has some advantages over running `org-md-export-to-markdown`:
+[`readme.el`](https://github.com/jeffkreeftmeijer/readme.el) is a script to generate Markdown files from Org documents, aimed at producing repository README files to be used on GitHub. It has some advantages over running `org-md-export-to-markdown`:
 
 1.  It uses [ox-gfm](https://github.com/larstvei/ox-gfm) to produce *GitHub-flavored Markdown*, a dialect of Markdown which adds some features, like [fenced code blocks](https://github.github.com/gfm/#fenced-code-blocks), which add syntax highlighting capabilities.
 2.  It uses [ox-md-title.el](https://github.com/jeffkreeftmeijer/ox-md-title.el) to add document titles to the produced Markdown documents, which is not enabled by default in Org mode's Markdown exporters.
