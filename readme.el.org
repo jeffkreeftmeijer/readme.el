@@ -1,14 +1,40 @@
 :PROPERTIES:
 :ID:       3C259707-BB5D-4A47-A77F-01107A2291F3
 :END:
-#+title: readme.el: Generate Markdown README files from Org documents
+#+title: Generate repository README files from Org documents
 #+author: Jeff Kreeftmeijer
 #+date: 2023-04-26
 
-A script to generate GitHub-Flavored Markdown files from Org documents, aimed at producing repository README files.
+A widespread standard amongst code hosting platforms is for repositories to have a file named =README.md=, which is then used as the description on the repository page.
+Generally, this file is written in Markdown, but other formats work too.
 
-It uses [[https://github.com/larstvei/ox-gfm][ox-gfm]] and [[https://github.com/jeffkreeftmeijer/ox-md-title.el][ox-md-title.el]] to produce GFM files with document titles.
-Instead of installing them through a package manager, both packages are vendored in and loaded directly:
+Aside from Markdown, GitHub support Org files too.
+However, the support for Org lacks most advanced features, producing HTML representations which include remnants of the Org files they're generated from.[fn:org-features]
+Using a Markdown-based README still produces the most reliable results.
+
+For example, all of the code for [[https://github.com/jeffkreeftmeijer/ox-md-title.el][ox-md-title.el]] is written inside an Org document in an attempt to write its documentation and implementation in a single source file.
+With a setup like that, maintaining a separate README file defeats the purpose of having the Org file as a signgle source of truth.
+Instead, it'd be useful to generate the README---in Markdown format---from the Org file as well.
+
+To generate a Markdown file from an Org document, run ~org-md-export-to-markdown~ in Emacs' batch mode:
+
+#+begin_src shell
+  emacs --batch ox-html-title.org --funcall org-md-export-to-markdown
+#+end_src
+
+This produces a Markdown representation of =ox-html-title.org= in =ox-html-title.md=.
+
+* =readme.el=
+
+=readme.el= is a script to generate Markdown files from Org documents, aimed at producing repository README files to be used on GitHub.
+It has some advantages over running ~org-md-export-to-markdown~:
+
+1. It uses [[https://github.com/larstvei/ox-gfm][ox-gfm]] to produce /GitHub-flavored Markdown/, a dialect of Markdown which adds some features, like [[https://github.github.com/gfm/#fenced-code-blocks][fenced code blocks]], which add syntax highlighting capabilities.
+2. It uses [[https://github.com/jeffkreeftmeijer/ox-md-title.el][ox-md-title.el]] to add document titles to the produced Markdown documents, which is not enabled by default in Org mode's Markdown exporters.
+3. It takes a filename, allowing a file named =ox-html-title.org= to produce a file named =README.md= instead of =ox-html-title.md=.
+
+The package dependencies are vendored in, so they don't need to be downloaded with a package manager.
+Instead, the script loads them from its local submodules, requires them, and sets up =ox-md-title=:
 
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
@@ -21,7 +47,9 @@ Instead of installing them through a package manager, both packages are vendored
 (org-md-title-add)
 #+end_src
 
-To generate the README, a function named =readme/to-markdown= is exposed:
+A function named =readme/to-markdown= is exposed, which is called to create the README file.
+Before generating the file, it turns on =ox-md-title='s =org-md-title= option and disables backup file creation.
+Then it generates the Markdown file and stores it in the location passed via the =filename= argument:
 
 #+headers: :tangle readme.el
 #+begin_src emacs-lisp
@@ -32,13 +60,14 @@ To generate the README, a function named =readme/to-markdown= is exposed:
       (write-file filename)))
 #+end_src
 
-To run the script, run Emacs in =--batch= mode, open the file to be converted to Markdown (=readme.el.org=, in this case), load =readme.el= and call the function with the desired output filename (=README.md=):
+To run the script, run Emacs in =--batch= mode, open the file to be converted to Markdown (=readme.el.org=, for example), load =readme.el= and call the function with the desired output filename (=README.md=):
 
 #+begin_src shell
   emacs --batch readme.el.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
 #+end_src
 
-To automatically generate README files on GitHub, add =readme.el= to your repository and add a workflow that calls it:
+To automatically generate README files on GitHub, add =readme.el= to your repository as a submodule and add a workflow that calls it.
+For example, the repository for =readme.el= includes [[https://github.com/jeffkreeftmeijer/readme.el/tree/main/.github/workflows][a workflow]] that automatically updates its README:[fn:workflows]
 
 #+headers: :tangle .github/workflows/readme.yml
 #+begin_src yaml
@@ -67,3 +96,15 @@ jobs:
         with:
           commit_message: Regenerate README.md
 #+end_src
+
+
+[fn:org-features] For example, [[https://github.com/jeffkreeftmeijer/ox-md-title.el/blob/0.1.0/ox-md-title.org][this document]] uses some features not supported by GitHub:
+
+1. Inline code blocks (~src_org~: src_org[:exports code]{+#title}, ~src_html~: src_html[:exports code]{<title>}) aren't replaced.
+2. Code blocks aren't executed and =:exports= options are ignored, showing the code block when only the results should be included.
+3. Noweb doesn't work, leaving unreplaced tags like =<<template>>= in the code blocks.
+4. Footnotes don't work, meaning the reference (~[fn:patch]~) is left in the file and the footnote isn't replaced with footnote markup.
+
+While the inline code blocks and footnotes could be fixed, it's no surprise that the code blocks aren't executed and files aren't tangled.
+
+[fn:workflows] Other projects that use =readme.el= in their workflows include [[https://github.com/jeffkreeftmeijer/ox-md-title.el/blob/develop/.github/workflows/markdown.yml][ox-md-title.el]] and [[https://github.com/jeffkreeftmeijer/ox-html-stable-ids.el/blob/develop/.github/workflows/readme.yml][ox-html-stable-ids.el]].
