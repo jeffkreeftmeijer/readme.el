@@ -1,4 +1,9 @@
-#+title: readme.el
+:PROPERTIES:
+:ID:       3C259707-BB5D-4A47-A77F-01107A2291F3
+:END:
+#+title: readme.el: Generate Markdown README files from Org documents
+#+author: Jeff Kreeftmeijer
+#+date: 2023-04-26
 
 A script to generate GitHub-Flavored Markdown files from Org documents, aimed at producing repository README files.
 
