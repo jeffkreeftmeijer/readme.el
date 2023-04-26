@@ -4,6 +4,7 @@
 #+title: Generate repository README files from Org documents
 #+author: Jeff Kreeftmeijer
 #+date: 2023-04-26
+#+options: toc:nil
 
 A widespread standard amongst code hosting platforms is for repositories to have a file named =README.md=, which is then used as the description on the repository page.
 Generally, this file is written in Markdown, but other formats work too.
