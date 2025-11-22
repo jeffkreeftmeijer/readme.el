@@ -70,7 +70,54 @@ To run the script, run Emacs in =--batch= mode, open the file to be converted to
 
 #+RESULTS:
 
-To automatically generate README files on GitHub, add =readme.el= to your repository as a submodule and add a workflow that calls it.
+* Automatically generate README files on GitHub
+
+To automatically generate README files on GitHub, add a workflow that runs =readme.el= whenever changes are pushed.
+There are two ways to do this, either by [[#nix-workflow][running a Nix command]], or [[#submodule-workflow][adding the submodule to your repository and running the script directly]].
+
+** As a Nix command
+:PROPERTIES:
+:CUSTOM_ID: nix-workflow
+:END:
+
+The =readme.el= repository includes a =flake.nix=, which provides a script with emacs and all dependencies installed.
+Run it with =nix run= directly from the repository:
+
+#+begin_src sh
+  nix run github:jeffkreeftmeijer/readme.el -- org-readme.org README.md
+#+end_src
+
+To install Nix and run generate README files automatically, use [[https://github.com/cachix/install-nix-action][install-nix-action]] and ~readme.el~ in a GitHub workflow:
+
+#+begin_src yaml
+  name: README.md
+
+  on:
+    push:
+      branches: [ "main" ]
+
+  jobs:
+    generate:
+      runs-on: ubuntu-latest
+
+      permissions:
+        contents: write
+
+      steps:
+        - uses: actions/checkout@v3
+        - uses: cachix/install-nix-action@v31
+        - run: nix run github:jeffkreeftmeijer/readme.el -- org-readme.org README.md
+        - uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: Regenerate README.md
+#+end_src
+
+** As a submodule
+:PROPERTIES:
+:CUSTOM_ID: submodule-workflow
+:END:
+
+To use =readme.el= as a submodule, check it out into your repository and call it from a workdlow.
 For example, the repository for =readme.el= includes [[https://github.com/jeffkreeftmeijer/readme.el/tree/main/.github/workflows][a workflow]] that automatically updates its README:[fn:workflows]
 
 #+headers: :tangle .github/workflows/readme.yml
