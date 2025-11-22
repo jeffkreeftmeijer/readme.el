@@ -28,11 +28,12 @@ The package dependencies are vendored in, so they don't need to be downloaded wi
 
 ```emacs-lisp
 (let ((directory (file-name-directory load-file-name)))
-  (load (concat directory "ox-gfm/ox-gfm"))
-  (load (concat directory "ox-md-title/ox-md-title")))
+  (unless (require 'ox-gfm nil t)
+    (require 'ox-gfm (concat directory "ox-gfm/ox-gfm")))
 
-(require 'ox-gfm)
-(require 'ox-md-title)
+  (unless (require 'ox-md-title nil t)
+    (require 'ox-md-title (concat directory "ox-md-title/ox-md-title"))))
+
 (org-md-title-add)
 ```
 
