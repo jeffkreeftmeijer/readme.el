@@ -53,7 +53,53 @@ To run the script, run Emacs in `--batch` mode, open the file to be converted to
 emacs --batch org-readme.org --load readme.el --eval "(readme/to-markdown \"README.md\")"
 ```
 
-To automatically generate README files on GitHub, add `readme.el` to your repository as a submodule and add a workflow that calls it. For example, the repository for `readme.el` includes [a workflow](https://github.com/jeffkreeftmeijer/readme.el/tree/main/.github/workflows) that automatically updates its README:<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>
+
+## Automatically generate README files on GitHub
+
+To automatically generate README files on GitHub, add a workflow that runs `readme.el` whenever changes are pushed. There are two ways to do this, either by [running a Nix command](#nix-workflow), or [adding the submodule to your repository and running the script directly](#submodule-workflow).
+
+
+<a id="nix-workflow"></a>
+
+### As a Nix command
+
+The `readme.el` repository includes a `flake.nix`, which provides a script with emacs and all dependencies installed. Run it with `nix run` directly from the repository:
+
+```sh
+nix run github:jeffkreeftmeijer/readme.el -- base16-ef-themes.org README.md
+```
+
+To install Nix and run generate README files automatically, use [install-nix-action](https://github.com/cachix/install-nix-action) and `readme.el` in a GitHub workflow:
+
+```yaml
+name: README.md
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v31
+      - run: nix run github:jeffkreeftmeijer/readme.el -- org-readme.org README.md
+      - uses: stefanzweifel/git-auto-commit-action@v4
+	with:
+	  commit_message: Regenerate README.md
+```
+
+
+<a id="submodule-workflow"></a>
+
+### As a submodule
+
+To use `readme.el` as a submodule, check it out into your repository and call it from a workdlow. For example, the repository for `readme.el` includes [a workflow](https://github.com/jeffkreeftmeijer/readme.el/tree/main/.github/workflows) that automatically updates its README:<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>
 
 ```yaml
 name: README.md
