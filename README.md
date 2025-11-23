@@ -66,7 +66,7 @@ To automatically generate README files on GitHub, add a workflow that runs `read
 The `readme.el` repository includes a `flake.nix`, which provides a script with emacs and all dependencies installed. Run it with `nix run` directly from the repository:
 
 ```sh
-nix run github:jeffkreeftmeijer/readme.el -- base16-ef-themes.org README.md
+nix run github:jeffkreeftmeijer/readme.el -- org-readme.org README.md
 ```
 
 To install Nix and run generate README files automatically, use [install-nix-action](https://github.com/cachix/install-nix-action) and `readme.el` in a GitHub workflow:
