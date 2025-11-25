@@ -1,1 +1,2 @@
 *.org linguist-vendored
+*.nix linguist-vendored
